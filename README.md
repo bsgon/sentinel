@@ -74,6 +74,49 @@ graph TD
     class H human;
 ```
 
+### Component View
+
+While the diagram above shows the *runtime flow*, the following diagram shows the *static components* and the trust boundary — who owns what, and which component is allowed to touch state, tools, or the human operator:
+
+```mermaid
+graph TB
+    IN[Flag event<br/>flag_id · run.py CLI]:::io
+
+    subgraph APP["Sentinel · ADK app (google-adk + Gemini)"]
+        ORCH[Orchestrator Agent<br/>control · routing · logging]:::orch
+        TRIAGE[Triage Agent<br/>constrained policy · no tools]:::agent
+        INV[Investigation Agent<br/>builds dossier]:::agent
+        GATE[Approval Gate<br/>HITL pause on high-risk]:::human
+        REP[Report Agent<br/>drafts RCA]:::agent
+    end
+
+    MCP[MCP Server<br/>4 read-only tools]:::tool
+    DATA[(Synthetic Data<br/>5 CSV tables)]:::io
+    SKILL[RCA Skill<br/>reusable function]:::tool
+    HUMAN([Human Operator<br/>approve / deny]):::human
+    LOG[/Decision Trail Log<br/>PII-redacted audit/]:::io
+
+    IN --> ORCH
+    ORCH --> TRIAGE
+    ORCH --> INV
+    ORCH --> GATE
+    ORCH --> REP
+    ORCH --> LOG
+
+    INV --> MCP
+    MCP --> DATA
+    GATE <--> HUMAN
+    REP --> SKILL
+
+    classDef orch fill:#ede9fe,stroke:#7c3aed,color:#3b0764;
+    classDef agent fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+    classDef human fill:#fef3c7,stroke:#d97706,color:#78350f;
+    classDef tool fill:#dcfce7,stroke:#16a34a,color:#14532d;
+    classDef io fill:#f3f4f6,stroke:#6b7280,color:#1f2937;
+```
+
+> **Reading the trust boundary:** the LLM agents (blue) never write state. Only the `Orchestrator` performs state changes (e.g. freezing an account), and only *after* the `Approval Gate` returns a human `approve`. The `Triage Agent` has **no tools** by design; only the `Investigation Agent` reaches data, and only through the **read-only** MCP server.
+
 ---
 
 ## 🌟 Concepts Demonstrated
