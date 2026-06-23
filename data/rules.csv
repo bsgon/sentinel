@@ -1,0 +1,9 @@
+rule_id,name,description,severity_default,recommended_action
+RUL-001,Rapid Structuring Deposit,"Multiple cash-in/deposits just below standard $10,000 reporting thresholds within 24 hours.",high,freeze_account
+RUL-002,IP Country Mismatch,User transaction IP country differs from their registered KYC country.,med,request_kyc
+RUL-003,Sanctioned Destination Address,Withdrawal counterparty blockchain address is associated with high-risk/sanctioned entities.,high,freeze_account
+RUL-004,High Value Transaction Spikes,A single transaction amount significantly exceeds the historic average for the account.,med,escalate
+RUL-005,Wash Trading Pattern,High-frequency self-matching trade behavior to artificially inflate token volumes.,low,monitor
+RUL-006,Velocity Trade Spike,Sub-second execution of multiple trade transactions suggestive of unauthorized API exploitation.,low,monitor
+RUL-007,Dormant Account Awakening,High-value trade or withdrawal on an account inactive for more than 180 days.,med,request_kyc
+RUL-008,Unusual Micro-Withdrawal Peeling,Repetitive minor withdrawals to nested external addresses within a short timeframe.,med,escalate

@@ -1,0 +1,7 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+
+# Runtime artifacts (regenerated on each run)
+data/decision_trail.log

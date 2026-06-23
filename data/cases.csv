@@ -1,0 +1,16 @@
+case_id,account_id,opened_at,category,resolution,rca_summary
+CAS-001,ACC-030,2025-07-01T23:03:02Z,Structuring,monitored,Investigation showed deposit velocity spikes just below local regulatory declaration limit. Repetitive transfers cleared after manual user tax verification.
+CAS-002,ACC-029,2025-08-08T16:06:13Z,Sanction_Match,cleared,User name or wallet address flagged on OFAC low-confidence keyword match. Confirmed false positive; account status restored.
+CAS-003,ACC-005,2025-08-18T05:58:27Z,IP_Mismatch,terminated,Session IP shifted to VPN endpoint during travel. Account verified via SMS OTP challenge and security team clearance.
+CAS-004,ACC-027,2025-08-20T17:13:35Z,Suspicious_Activity,terminated,"Automated alert triggered on repetitive high volume trades. Reviewed trade execution logs, concluded standard API usage, status kept active."
+CAS-005,ACC-026,2025-09-17T13:44:32Z,IP_Mismatch,monitored,Session IP shifted to VPN endpoint during travel. Account verified via SMS OTP challenge and security team clearance.
+CAS-006,ACC-037,2025-10-13T06:56:41Z,Account_Takeover,terminated,"Sudden device shift followed by withdrawal attempt. Session terminated, password reset required, and trade restriction lifted after KYC selfie verify."
+CAS-007,ACC-010,2025-10-17T01:15:04Z,Account_Takeover,terminated,"Sudden device shift followed by withdrawal attempt. Session terminated, password reset required, and trade restriction lifted after KYC selfie verify."
+CAS-008,ACC-033,2025-10-26T05:35:25Z,IP_Mismatch,terminated,Session IP shifted to VPN endpoint during travel. Account verified via SMS OTP challenge and security team clearance.
+CAS-009,ACC-018,2025-11-09T04:06:22Z,Suspicious_Activity,monitored,"Automated alert triggered on repetitive high volume trades. Reviewed trade execution logs, concluded standard API usage, status kept active."
+CAS-010,ACC-025,2025-11-11T11:53:07Z,Structuring,cleared,Investigation showed deposit velocity spikes just below local regulatory declaration limit. Repetitive transfers cleared after manual user tax verification.
+CAS-011,ACC-010,2025-12-14T20:33:50Z,IP_Mismatch,terminated,Session IP shifted to VPN endpoint during travel. Account verified via SMS OTP challenge and security team clearance.
+CAS-012,ACC-006,2025-12-25T07:03:26Z,Structuring,terminated,Investigation showed deposit velocity spikes just below local regulatory declaration limit. Repetitive transfers cleared after manual user tax verification.
+CAS-013,ACC-038,2025-12-26T01:03:24Z,Account_Takeover,cleared,"Sudden device shift followed by withdrawal attempt. Session terminated, password reset required, and trade restriction lifted after KYC selfie verify."
+CAS-014,ACC-020,2026-01-06T12:54:15Z,Account_Takeover,monitored,"Sudden device shift followed by withdrawal attempt. Session terminated, password reset required, and trade restriction lifted after KYC selfie verify."
+CAS-015,ACC-010,2026-01-24T13:11:49Z,Sanction_Match,cleared,User name or wallet address flagged on OFAC low-confidence keyword match. Confirmed false positive; account status restored.
