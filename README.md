@@ -214,6 +214,19 @@ Sentinel provides an interactive CLI (`run.py`) to process flags:
 *   **PII Auditing**: Decision trail logs stored in `data/decision_trail.log` are filtered through a multi-pass regex filter to ensure that transaction IP countries, wallet IDs, and devices are redacted from the text, satisfying governance audits.
 *   **Safe Credentials**: No credentials, API keys, or tokens are checked into the codebase. All runtime configuration is driven strictly through local environment variables.
 
+### Mapping to the NIST AI Risk Management Framework
+
+Sentinel's oversight design maps directly onto the four functions of the [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework). The human-in-the-loop gate, the constrained policy, and the decision trail together operationalize **human oversight** as a concrete, auditable control rather than a slogan.
+
+| NIST Function | How Sentinel implements it |
+|---|---|
+| **Govern** — policies, roles, accountability | Constrained action policy: the `TriageAgent`'s Pydantic schema permits only `monitor`, `request_kyc`, `escalate`, `freeze_account`. Single-responsibility agents enforce separation of duties — only the `Orchestrator` mutates state, and only after human approval. |
+| **Map** — establish risk context | The `TriageAgent` classifies each flag's `severity` + `category` against `rules.csv`, which encodes the exchange's risk appetite (e.g. sanctioned address → freeze) before any action is considered. |
+| **Measure** — analyze, assess, trace | The `InvestigationAgent` assembles an evidence dossier (account, transactions, flags, prior cases) via the read-only MCP server; every run emits a PII-redacted `decision_trail.log` (action, decision, rationale, timestamp) and a structured RCA report for traceability. |
+| **Manage** — prioritize and mitigate | Risk-proportionate response: high-risk actions pause for human `approve`/`deny`, low-risk proceed automatically. LLMs cannot write state (mitigating irreversible automated error); read-only tools and PII redaction enforce least privilege and limit data exposure. |
+
+> A fuller, paste-ready version of this section for the project writeup lives in [`docs/governance-nist-rmf.md`](docs/governance-nist-rmf.md).
+
 ---
 
 ## ⚠️ Limitations & Development Notes
