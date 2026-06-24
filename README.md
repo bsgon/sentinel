@@ -227,6 +227,15 @@ Sentinel's oversight design maps directly onto the four functions of the [NIST A
 
 > A fuller, paste-ready version of this section for the project writeup lives in [`docs/governance-nist-rmf.md`](docs/governance-nist-rmf.md).
 
+### Threat model (STRIDE)
+
+Beyond the NIST framing, the project ships a full **STRIDE** security analysis in [`threat_model.md`](threat_model.md) — evaluating Sentinel against Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, and Elevation of Privilege, with a per-threat status, the existing mitigation, and the remaining gap. Highlights:
+
+- **Strengths:** read-only MCP tools, agent privilege separation (Triage has no tools), the human-in-the-loop gate, and active `redact_pii` sanitization of logs and reports (Information Disclosure rated low-risk).
+- **Honest gaps for production:** plaintext CSV storage lacks integrity controls, decision-trail logs are not tamper-proof (no WORM/signing), the approval gate has no operator authentication, and the `bypass_gate` test hook should be removed from the orchestrator's main control flow.
+
+The document doubles as the roadmap from a portfolio demo to a production-hardened deployment.
+
 ---
 
 ## ⚠️ Limitations & Development Notes
