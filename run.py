@@ -104,16 +104,23 @@ async def run_pipeline(flag_id: str):
                 # Successful run, break out of retry loop
                 break
             except (ClientError, Exception) as ce:
-                # Check for 429 / RESOURCE_EXHAUSTED
                 err_msg = str(ce)
-                if "RESOURCE_EXHAUSTED" in err_msg or "429" in err_msg:
+                # Check for 429 / RESOURCE_EXHAUSTED or 503 / UNAVAILABLE / transient server errors
+                is_quota = "RESOURCE_EXHAUSTED" in err_msg or "429" in err_msg
+                is_transient = "UNAVAILABLE" in err_msg or "503" in err_msg or "INTERNAL" in err_msg or "500" in err_msg
+                
+                if is_quota or is_transient:
                     attempt += 1
-                    delay = 60
-                    # Check for recommended retry delay in error string
-                    match = re.search(r"Please retry in (\d+\.?\d*)s", err_msg)
-                    if match:
-                        delay = int(float(match.group(1))) + 2
-                    print(f"\n[Rate Limit] Gemini 429 Resource Exhausted. Retrying attempt {attempt}/{max_retries} in {delay}s...", file=sys.stderr)
+                    if is_quota:
+                        delay = 60
+                        # Check for recommended retry delay in error string
+                        match = re.search(r"Please retry in (\d+\.?\d*)s", err_msg)
+                        if match:
+                            delay = int(float(match.group(1))) + 2
+                        print(f"\n[Rate Limit] Gemini 429 Resource Exhausted. Retrying attempt {attempt}/{max_retries} in {delay}s...", file=sys.stderr)
+                    else:
+                        delay = 5 * attempt # Incremental backoff: 5s, 10s, 15s...
+                        print(f"\n[API Error] Gemini 503/500 Service Unavailable. Retrying attempt {attempt}/{max_retries} in {delay}s...", file=sys.stderr)
                     await asyncio.sleep(delay)
                 else:
                     raise ce
